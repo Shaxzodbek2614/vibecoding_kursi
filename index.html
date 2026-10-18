@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vibecoding kursi — g‘oyangni ayt, sun’iy intellekt quradi</title>
+<meta name="description" content="6 oylik kurs: farzandingiz noldan boshlab sun’iy intellekt yordamida Telegram bot, web sayt va mobil ilova yaratadi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF1FF; --surface:#FFFFFF; --ink:#1A1446; --ink-soft:#4B4778; --line:#D6DAF5;
+  --violet:#5B3DF5; --violet-deep:#3F25D6; --sun:#FFC93C; --mint:#2ED3A6; --sky:#DCE3FF;
+  --display:'Unbounded', 'Arial Black', sans-serif; --text:'Golos Text', Arial, sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--text);font-size:18px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--violet);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.08;margin:0;letter-spacing:-0.01em}
+h2{font-size:clamp(30px,4.4vw,52px);max-width:16ch}
+p{margin:0}
+.lead{font-size:clamp(18px,1.8vw,21px);color:var(--ink-soft);max-width:46ch}
+section{padding:112px 0}
+.btn{display:inline-flex;align-items:center;gap:10px;font:600 17px/1 var(--text);padding:17px 26px;border-radius:999px;border:2px solid var(--ink);text-decoration:none;cursor:pointer;transition:transform .15s ease, background .15s ease}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--violet);border-color:var(--violet);color:#fff}
+.btn-primary:hover{background:var(--violet-deep);border-color:var(--violet-deep)}
+.btn-ghost{background:transparent;color:var(--ink)}
+.btn-ghost:hover{background:var(--surface)}
+
+/* nav */
+.nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.logo{font-family:var(--display);font-weight:700;font-size:20px;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:var(--violet);display:grid;place-items:center}
+.nav a.navlink{font-weight:600;text-decoration:none;padding:10px 18px;border-radius:999px;background:var(--surface)}
+
+/* hero */
+.hero{padding:24px 0 96px}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;margin-top:40px}
+.hero h1{font-size:clamp(40px,6vw,76px)}
+.hero .lead{margin:28px 0 36px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:10px;margin-top:36px;padding:0;list-style:none}
+.hero-facts li{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:15px;font-weight:500}
+
+/* builder */
+.builder{background:var(--ink);color:#fff;border-radius:32px;padding:28px;display:grid;grid-template-columns:1fr 210px;gap:24px;align-items:center;box-shadow:0 30px 60px -30px rgba(26,20,70,.55)}
+.builder-side{display:flex;flex-direction:column;gap:16px;min-width:0}
+.builder-q{font-weight:600;font-size:15px;color:#C9C4F2}
+.chips{display:flex;flex-direction:column;gap:8px}
+.chip{font:500 15px/1.3 var(--text);text-align:left;color:#fff;background:#2B2463;border:1.5px solid #3D3585;border-radius:14px;padding:11px 14px;cursor:pointer;transition:background .15s, border-color .15s}
+.chip:hover{border-color:#6E62D9}
+.chip[aria-pressed="true"]{background:var(--violet);border-color:var(--violet)}
+.prompt{background:#110D33;border-radius:14px;padding:13px 14px;font-size:15px;min-height:72px;color:#E8E5FF}
+.prompt-label{display:block;font-size:12px;color:#8F88D1;margin-bottom:4px}
+.caret{display:inline-block;width:2px;height:1.05em;background:var(--sun);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.status{display:flex;align-items:center;gap:10px;font-size:14px;color:#C9C4F2;min-height:22px}
+.bar{flex:1;height:6px;border-radius:6px;background:#2B2463;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mint),var(--sun));border-radius:6px}
+.phone{width:210px;height:420px;border-radius:36px;background:#0B0826;padding:10px;position:relative;justify-self:center}
+.phone::before{content:"";position:absolute;top:18px;left:50%;transform:translateX(-50%);width:62px;height:16px;border-radius:10px;background:#0B0826;z-index:2}
+.screen{width:100%;height:100%;border-radius:28px;background:#F6F7FF;color:var(--ink);overflow:hidden;padding:40px 12px 12px;display:flex;flex-direction:column;gap:8px;font-size:12.5px;line-height:1.35}
+.pop{animation:pop .38s cubic-bezier(.2,.9,.3,1.3) both}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.92)}to{opacity:1;transform:none}}
+.s-head{font-family:var(--display);font-size:13px;font-weight:700;padding:4px 2px}
+.s-msg{background:#fff;border-radius:12px 12px 12px 4px;padding:8px 10px;max-width:88%;box-shadow:0 1px 0 var(--line)}
+.s-me{align-self:flex-end;background:var(--violet);color:#fff;border-radius:12px 12px 4px 12px}
+.s-row{display:flex;gap:6px;flex-wrap:wrap}
+.s-btn{background:var(--sky);color:var(--violet-deep);font-weight:700;border-radius:8px;padding:6px 9px;font-size:12px}
+.s-ok{background:#D7F7EE;color:#0B6B53;font-weight:700;border-radius:10px;padding:8px 10px}
+.s-card{background:#fff;border-radius:12px;padding:10px;box-shadow:0 1px 0 var(--line)}
+.s-big{background:var(--violet);color:#fff;border-radius:14px;padding:12px}
+.s-big b{display:block;font-family:var(--display);font-size:14px;margin-top:2px}
+.s-player{display:flex;align-items:center;gap:8px}
+.s-av{width:22px;height:22px;border-radius:50%;flex:none}
+.s-hero{background:linear-gradient(135deg,var(--violet),#8A6CFF);color:#fff;border-radius:14px;padding:14px 12px}
+.s-hero b{font-family:var(--display);font-size:13px;display:block;margin-bottom:4px}
+.s-cta{background:var(--sun);color:var(--ink);font-weight:700;border-radius:999px;padding:8px 12px;text-align:center}
+.s-bar-top{display:flex;gap:4px;padding:2px}
+.s-bar-top span{width:6px;height:6px;border-radius:50%;background:var(--line)}
+
+/* before / after */
+.toggle-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px;margin-top:32px}
+.seg button{font:600 16px/1 var(--text);border:0;background:transparent;color:var(--ink-soft);padding:13px 24px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
+.seg button[aria-selected="true"]{background:var(--ink);color:#fff}
+.compare{position:relative;border-radius:32px;min-height:340px;padding:44px;transition:background .45s ease,color .45s ease;background:var(--surface);border:1px solid var(--line)}
+.compare.is-now{background:var(--violet);color:#fff;border-color:var(--violet)}
+.compare h3{font-size:clamp(26px,3vw,36px);margin-bottom:24px}
+.compare ul{margin:0;padding:0;list-style:none;display:grid;gap:16px}
+.compare li{display:flex;gap:14px;align-items:flex-start;font-size:19px}
+.compare li svg{flex:none;margin-top:3px}
+.fade-swap{animation:swap .4s ease both}
+@keyframes swap{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+
+/* products */
+.products{background:var(--surface)}
+.prod-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;margin-top:48px;align-items:stretch}
+.prod-list{display:flex;flex-direction:column;gap:6px;padding:0;margin:0;list-style:none}
+.prod-list button{width:100%;text-align:left;background:transparent;border:0;border-left:4px solid var(--line);padding:18px 22px;cursor:pointer;font:inherit;color:var(--ink-soft);transition:border-color .2s,background .2s,color .2s;border-radius:0 16px 16px 0}
+.prod-list button strong{display:block;font-family:var(--display);font-size:21px;color:var(--ink);margin-bottom:4px}
+.prod-list button[aria-selected="true"]{border-left-color:var(--violet);background:var(--bg);color:var(--ink)}
+.prod-view{background:var(--bg);border-radius:32px;padding:40px;display:flex;flex-direction:column;justify-content:center;gap:24px;min-height:420px}
+.prod-view svg{width:100%;height:auto;max-height:300px}
+.prod-view p{font-size:19px;color:var(--ink-soft);max-width:40ch}
+
+/* languages */
+.langs{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:56px;border-top:2px solid var(--ink)}
+.lang{padding:32px 28px 8px 0}
+.lang + .lang{padding-left:28px;border-left:1px solid var(--line)}
+.lang h3{font-size:clamp(28px,3.4vw,42px);margin-bottom:12px}
+.lang .tag{display:inline-block;font-weight:700;font-size:15px;padding:6px 12px;border-radius:999px;margin-bottom:16px}
+.lang p{color:var(--ink-soft)}
+.langs-note{margin-top:40px;font-size:19px;max-width:52ch}
+
+/* journey */
+.journey{background:var(--ink);color:#fff}
+.journey h2{color:#fff}
+.journey .lead{color:#C9C4F2}
+.months{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:48px}
+.months button{font:600 15px/1.2 var(--text);color:#C9C4F2;background:#241D5C;border:0;border-radius:14px;padding:14px 8px;cursor:pointer;position:relative;overflow:hidden;transition:color .2s}
+.months button::after{content:"";position:absolute;left:0;bottom:0;height:5px;width:100%;background:var(--sun);transform:scaleX(0);transform-origin:left;transition:transform .35s ease}
+.months button.done::after{transform:scaleX(1)}
+.months button[aria-selected="true"]{background:var(--violet);color:#fff}
+.month-panel{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;margin-top:28px;background:#241D5C;border-radius:32px;padding:44px}
+.month-num{font-family:var(--display);font-size:clamp(72px,10vw,128px);line-height:.9;color:var(--sun)}
+.month-num small{display:block;font-size:20px;color:#C9C4F2;margin-top:10px}
+.month-panel h3{font-size:clamp(24px,2.8vw,34px);margin-bottom:12px}
+.month-panel p{color:#DCD8FF;font-size:19px;max-width:44ch}
+.month-hint{margin-top:18px;font-size:15px;color:#8F88D1}
+
+/* statement */
+.statement{background:var(--sun);overflow:hidden}
+.statement-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:40px;align-items:center}
+.statement h2{font-size:clamp(32px,4.6vw,58px);max-width:20ch}
+.statement .lead{color:var(--ink);margin-top:24px}
+.rocket-box{position:relative;height:380px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:18px}
+#rocket{width:180px;transition:transform 1.4s cubic-bezier(.55,0,.75,.2)}
+#rocket .flame{transform-origin:50% 0;transform:scaleY(.4);transition:transform .3s}
+.launched #rocket{transform:translateY(-560px)}
+.launched #rocket .flame{transform:scaleY(1.3)}
+.statement .btn{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* facts + cta */
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;border:2px solid var(--ink);border-radius:28px;overflow:hidden;background:var(--surface)}
+.fact{padding:28px 24px}
+.fact + .fact{border-left:2px solid var(--ink)}
+.fact b{display:block;font-family:var(--display);font-size:clamp(26px,3vw,38px);line-height:1.1;margin-bottom:6px}
+.fact span{color:var(--ink-soft)}
+.cta{margin-top:64px;background:var(--violet);color:#fff;border-radius:36px;padding:56px;display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+.cta h2{color:#fff;max-width:18ch}
+.cta p{color:#E4DEFF;margin-top:16px;font-size:19px}
+.contacts{display:grid;gap:12px}
+.contacts a{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.3);border-radius:18px;padding:18px 22px;text-decoration:none;font-weight:600;transition:background .15s}
+.contacts a:hover{background:rgba(255,255,255,.22)}
+.contacts a span{color:#E4DEFF;font-weight:400}
+footer{padding:40px 0 56px;color:var(--ink-soft);font-size:15px}
+
+/* reveal: one gentle entrance, only where JS runs */
+.js .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.js .reveal.in{opacity:1;transform:none}
+
+@media (max-width:900px){
+  section{padding:80px 0}
+  .hero-grid,.toggle-wrap,.prod-grid,.statement-grid,.cta{grid-template-columns:1fr}
+  .builder{grid-template-columns:1fr;justify-items:center}
+  .builder-side{width:100%}
+  .langs{grid-template-columns:1fr}
+  .lang + .lang{padding-left:0;border-left:0;border-top:1px solid var(--line)}
+  .facts{grid-template-columns:1fr 1fr}
+  .fact:nth-child(3){border-left:0}
+  .fact:nth-child(n+3){border-top:2px solid var(--ink)}
+  .month-panel{grid-template-columns:1fr;gap:16px;padding:32px}
+  .months{grid-template-columns:repeat(3,1fr)}
+  .rocket-box{height:300px}
+  .cta{padding:36px 24px}
+  .compare{padding:32px}
+}
+@media (max-width:520px){
+  .facts{grid-template-columns:1fr}
+  .fact + .fact{border-left:0;border-top:2px solid var(--ink)}
+  .prod-view{padding:24px}
+  .nav a.navlink{padding:8px 14px;font-size:15px}
+  .logo{font-size:17px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .js .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js');document.body.classList.add('js')</script>
+
+<header class="hero">
+  <div class="wrap">
+    <nav class="nav" aria-label="Asosiy">
+      <a class="logo" href="#"><span class="logo-mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M3 5l5 5-5 5" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 15h6" stroke="#FFC93C" stroke-width="2.6" stroke-linecap="round"/></svg></span>vibecoding</a>
+      <a class="navlink" href="#royxat">Ro‘yxatdan o‘tish</a>
+    </nav>
+    <div class="hero-grid">
+      <div>
+        <h1>G‘oyangni ayt. Sun’iy intellekt quradi.</h1>
+        <p class="lead">6 oylik kursda farzandingiz noldan boshlab Telegram bot, web sayt va mobil ilova yaratadi. U sun’iy intellektni boshqarishni o‘rganadi.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#royxat">Ro‘yxatdan o‘tish</a>
+          <a class="btn btn-ghost" href="#yol">6 oylik yo‘lni ko‘rish</a>
+        </div>
+        <ul class="hero-facts" aria-label="Kurs haqida qisqacha">
+          <li>Dasturlash tajribasi shart emas</li>
+          <li>Haftasiga 3 dars</li>
+          <li>Demo Day bilan yakun</li>
+        </ul>
+      </div>
+
+      <div class="builder" aria-label="Sinab ko‘ring: g‘oyani tanlang, AI uni telefonda quradi">
+        <div class="builder-side">
+          <p class="builder-q">G‘oyani tanlang — AI quradi:</p>
+          <div class="chips" role="group" aria-label="G‘oyalar">
+            <button class="chip" data-scene="bot" aria-pressed="true">Kafe uchun buyurtma boti</button>
+            <button class="chip" data-scene="app" aria-pressed="false">Futbol jamoasi ilovasi</button>
+            <button class="chip" data-scene="site" aria-pressed="false">O‘quv markazi sayti</button>
+          </div>
+          <div class="prompt"><span class="prompt-label">Prompt</span><span id="promptText"></span><span class="caret" aria-hidden="true"></span></div>
+          <div class="status" aria-live="polite"><span id="statusText">Tayyorlanmoqda…</span><span class="bar"><i id="barFill"></i></span></div>
+        </div>
+        <div class="phone" aria-hidden="true"><div class="screen" id="screen"></div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section aria-labelledby="t-ozgardi">
+  <div class="wrap toggle-wrap reveal">
+    <div>
+      <h2 id="t-ozgardi">Dastur yaratish o‘zgardi</h2>
+      <p class="lead" style="margin-top:20px">Bosib solishtiring: ilgari qanday edi va bugun qanday.</p>
+      <div class="seg" role="tablist" aria-label="Solishtirish">
+        <button role="tab" id="tab-old" aria-selected="false" aria-controls="compare">Ilgari</button>
+        <button role="tab" id="tab-now" aria-selected="true" aria-controls="compare">Endi</button>
+      </div>
+    </div>
+    <div class="compare is-now" id="compare" role="tabpanel" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="products" aria-labelledby="t-prod">
+  <div class="wrap reveal">
+    <h2 id="t-prod">6 oyda farzandingiz yaratadi</h2>
+    <div class="prod-grid">
+      <ul class="prod-list" role="tablist" aria-label="Mahsulotlar">
+        <li><button role="tab" aria-selected="true" data-prod="0"><strong>Mobil ilova</strong>Do‘stlari telefoniga o‘rnatadi</button></li>
+        <li><button role="tab" aria-selected="false" data-prod="1"><strong>Web sayt</strong>O‘z domenida, telefonda ham chiroyli</button></li>
+        <li><button role="tab" aria-selected="false" data-prod="2"><strong>Telegram bot</strong>Buyurtma oladi, mijozga o‘zi javob beradi</button></li>
+        <li><button role="tab" aria-selected="false" data-prod="3"><strong>AI yordamchi</strong>Biznes uchun kechayu kunduz ishlaydi</button></li>
+      </ul>
+      <div class="prod-view" id="prodView" role="tabpanel" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="t-lang">
+  <div class="wrap reveal">
+    <h2 id="t-lang">Bitta kursda 3 til va 4 yo‘nalish</h2>
+    <div class="langs">
+      <div class="lang"><span class="tag" style="background:#DCE3FF;color:#3F25D6">Bot va AI</span><h3>Python</h3><p>Telegram botlar va sun’iy intellekt yordamchilari shu tilda quriladi.</p></div>
+      <div class="lang"><span class="tag" style="background:#FFF0C2;color:#7A5600">Web</span><h3>JavaScript</h3><p>Internetdagi deyarli har bir sayt shu tilda ishlaydi.</p></div>
+      <div class="lang"><span class="tag" style="background:#D7F7EE;color:#0B6B53">Mobil</span><h3>Flutter</h3><p>Bitta kod bilan ham Android, ham iPhone uchun ilova.</p></div>
+    </div>
+    <p class="langs-note">O‘quvchi kodni yodlamaydi: AI yozadi, o‘quvchi esa uni o‘qiydi, tushunadi va boshqaradi. Shuning uchun bitta kursga to‘rt yo‘nalish sig‘adi.</p>
+  </div>
+</section>
+
+<section class="journey" id="yol" aria-labelledby="t-yol">
+  <div class="wrap">
+    <h2 id="t-yol">6 oylik yo‘l</h2>
+    <p class="lead" style="margin-top:20px">Har oy uyga yangi natija bilan keladi. Oyni tanlang.</p>
+    <div class="months" role="tablist" aria-label="Oylar"></div>
+    <div class="month-panel" id="monthPanel" role="tabpanel" aria-live="polite"></div>
+    <p class="month-hint">Klaviatura: ← → tugmalari bilan oylarni almashtiring.</p>
+  </div>
+</section>
+
+<section class="statement" aria-labelledby="t-st">
+  <div class="wrap statement-grid">
+    <div class="reveal">
+      <h2 id="t-st">Farzandingiz AI’dan shunchaki foydalanmaydi. Uni boshqarishni o‘rganadi.</h2>
+      <p class="lead">Va 6 oyda o‘z startupini yaratib, Demo Day’da tadbirkorlar oldida taqdim etadi.</p>
+    </div>
+    <div class="rocket-box" id="rocketBox">
+      <svg id="rocket" viewBox="0 0 180 300" role="img" aria-label="Raketa">
+        <path class="flame" d="M70 236 Q90 320 110 236 Z" fill="#FF6B3D"/>
+        <path d="M58 180 L28 240 L64 226 Z" fill="#1A1446"/>
+        <path d="M122 180 L152 240 L116 226 Z" fill="#1A1446"/>
+        <path d="M90 14 C130 56 138 140 128 226 L52 226 C42 140 50 56 90 14 Z" fill="#FFFFFF"/>
+        <path d="M90 14 C110 34 122 58 126 82 L54 82 C58 58 70 34 90 14 Z" fill="#5B3DF5"/>
+        <circle cx="90" cy="140" r="22" fill="#5B3DF5" stroke="#1A1446" stroke-width="6"/>
+        <rect x="62" y="222" width="56" height="16" rx="6" fill="#1A1446"/>
+      </svg>
+      <button class="btn" id="launch" type="button">Raketani uchir</button>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="t-cta" id="royxat">
+  <div class="wrap">
+    <h2 id="t-cta" class="reveal">Qisqacha</h2>
+    <div class="facts reveal">
+      <div class="fact"><b>6 oy</b><span>noldan startupgacha</span></div>
+      <div class="fact"><b>3 dars</b><span>haftasiga, 1,5 soatdan</span></div>
+      <div class="fact"><b>0 dan</b><span>tajriba shart emas</span></div>
+      <div class="fact"><b>Demo Day</b><span>o‘z startupini taqdim etadi</span></div>
+    </div>
+    <div class="cta reveal">
+      <div>
+        <h2>Birinchi darsga yozilish</h2>
+        <p>Qo‘ng‘iroq qiling yoki yozing — guruh va dars vaqtini aytib beramiz.</p>
+      </div>
+      <div class="contacts">
+        <a href="tel:+998000000000">Qo‘ng‘iroq qilish <span>[Telefon]</span></a>
+        <a href="https://t.me/">Telegram’da yozish <span>[Telegram]</span></a>
+        <a href="#">Manzil <span>[Manzil]</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">© 2026 Vibecoding kursi</div></footer>
+
+<script>
+(function(){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+
+  /* ---------- Hero builder ---------- */
+  const scenes = {
+    bot: {
+      prompt: 'Kafe uchun Telegram bot yasa: menyuni ko‘rsatsin va buyurtma qabul qilsin',
+      parts: [
+        '<div class="s-head">Kafe boti</div>',
+        '<div class="s-msg">Assalomu alaykum! Nima buyurtma qilasiz?</div>',
+        '<div class="s-row"><span class="s-btn">Osh</span><span class="s-btn">Lag‘mon</span><span class="s-btn">Choy</span></div>',
+        '<div class="s-msg s-me">Osh, 2 porsiya</div>',
+        '<div class="s-msg">Manzilingizni yuboring</div>',
+        '<div class="s-ok">Buyurtma qabul qilindi. 30 daqiqada yetkazamiz.</div>'
+      ]
+    },
+    app: {
+      prompt: 'Futbol jamoamiz uchun mobil ilova: o‘yin vaqti va o‘yinchilar ro‘yxati',
+      parts: [
+        '<div class="s-head">Mening jamoam</div>',
+        '<div class="s-big">Keyingi o‘yin<b>Shanba, 18:00</b>Maktab stadioni</div>',
+        '<div class="s-card s-player"><span class="s-av" style="background:#5B3DF5"></span>Aziz — hujumchi</div>',
+        '<div class="s-card s-player"><span class="s-av" style="background:#FFC93C"></span>Bekzod — darvozabon</div>',
+        '<div class="s-card s-player"><span class="s-av" style="background:#2ED3A6"></span>Jasur — himoyachi</div>',
+        '<div class="s-cta">O‘yinga qatnashaman</div>'
+      ]
+    },
+    site: {
+      prompt: 'O‘quv markazi uchun sayt: kurslar ro‘yxati va ro‘yxatdan o‘tish tugmasi',
+      parts: [
+        '<div class="s-bar-top"><span></span><span></span><span></span></div>',
+        '<div class="s-hero"><b>Bilim markazi</b>Ingliz tili, matematika va IT kurslari</div>',
+        '<div class="s-card">Ingliz tili · 3 oy</div>',
+        '<div class="s-card">Matematika · 4 oy</div>',
+        '<div class="s-card">IT asoslari · 2 oy</div>',
+        '<div class="s-cta">Ro‘yxatdan o‘tish</div>'
+      ]
+    }
+  };
+  const promptEl = document.getElementById('promptText');
+  const statusEl = document.getElementById('statusText');
+  const barEl = document.getElementById('barFill');
+  const screen = document.getElementById('screen');
+  const chips = document.querySelectorAll('.chip');
+  let run = 0;
+
+  async function play(name){
+    const id = ++run, s = scenes[name];
+    chips.forEach(c => c.setAttribute('aria-pressed', c.dataset.scene === name));
+    screen.innerHTML = ''; promptEl.textContent = '';
+    barEl.style.transition = 'none'; barEl.style.width = '0';
+    statusEl.textContent = 'Siz yozyapsiz…';
+    if (reduce) { promptEl.textContent = s.prompt; }
+    else {
+      for (const ch of s.prompt) { if (id !== run) return; promptEl.textContent += ch; await wait(26); }
+    }
+    if (id !== run) return;
+    statusEl.textContent = 'AI qurmoqda…';
+    void barEl.offsetWidth;
+    barEl.style.transition = reduce ? 'none' : 'width 1.1s ease';
+    barEl.style.width = '100%';
+    await wait(1100);
+    for (const p of s.parts) {
+      if (id !== run) return;
+      screen.insertAdjacentHTML('beforeend', p);
+      screen.lastElementChild.classList.add('pop');
+      await wait(260);
+    }
+    if (id === run) statusEl.textContent = 'Tayyor! Boshqa g‘oyani tanlang.';
+  }
+  chips.forEach(c => c.addEventListener('click', () => play(c.dataset.scene)));
+
+  /* ---------- Before / after ---------- */
+  const tick = '<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#FFC93C"/><path d="M7 12.5l3.2 3.2L17 9" stroke="#1A1446" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const dash = '<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#DCE3FF"/><path d="M7 12h10" stroke="#4B4778" stroke-width="2.4" stroke-linecap="round"/></svg>';
+  const compare = {
+    old: { title:'Ilgari', items:['Yillar davomida kod yozishni o‘rganish kerak edi','Bitta ilova uchun butun jamoa kerak edi','Birinchi natijani ko‘rish uchun oylar ketardi'], icon:dash },
+    now: { title:'Endi', items:['G‘oyangni sun’iy intellektga oddiy so‘z bilan aytasan','AI kod yozadi, sen boshqarasan va tekshirasan','Birinchi ishlaydigan natija birinchi haftadayoq'], icon:tick }
+  };
+  const cmpEl = document.getElementById('compare');
+  const tabOld = document.getElementById('tab-old'), tabNow = document.getElementById('tab-now');
+  function showCompare(key){
+    const d = compare[key];
+    tabOld.setAttribute('aria-selected', key==='old'); tabNow.setAttribute('aria-selected', key==='now');
+    cmpEl.classList.toggle('is-now', key==='now');
+    cmpEl.innerHTML = '<div class="fade-swap"><h3>'+d.title+'</h3><ul>'+d.items.map(t=>'<li>'+d.icon+'<span>'+t+'</span></li>').join('')+'</ul></div>';
+  }
+  tabOld.addEventListener('click',()=>showCompare('old'));
+  tabNow.addEventListener('click',()=>showCompare('now'));
+  showCompare('now');
+
+  /* ---------- Products ---------- */
+  const prods = [
+    { text:'O‘quvchi Flutter yordamida ilova yaratadi va uni Play Market’ga yuklaydi. Do‘stlari uni o‘z telefoniga o‘rnata oladi.',
+      svg:'<svg viewBox="0 0 480 300" role="img" aria-label="Telefonda mobil ilova"><rect width="480" height="300" rx="28" fill="#DCE3FF"/><rect x="180" y="24" width="120" height="252" rx="22" fill="#1A1446"/><rect x="190" y="38" width="100" height="224" rx="14" fill="#F6F7FF"/><rect x="202" y="56" width="34" height="34" rx="9" fill="#5B3DF5"/><rect x="244" y="56" width="34" height="34" rx="9" fill="#FFC93C"/><rect x="202" y="98" width="34" height="34" rx="9" fill="#2ED3A6"/><rect x="244" y="98" width="34" height="34" rx="9" fill="#FF6B3D"/><rect x="202" y="146" width="76" height="70" rx="12" fill="#FFFFFF"/><rect x="212" y="160" width="46" height="9" rx="4" fill="#1A1446"/><rect x="212" y="178" width="56" height="7" rx="3" fill="#B9BDE0"/><rect x="212" y="194" width="34" height="12" rx="6" fill="#5B3DF5"/><path d="M96 92l8 20 20 8-20 8-8 20-8-20-20-8 20-8z" fill="#5B3DF5"/><path d="M384 170l6 14 14 6-14 6-6 14-6-14-14-6 14-6z" fill="#FFC93C"/></svg>' },
+    { text:'O‘quvchi o‘z startupi uchun sayt quradi va uni o‘z domenida internetga chiqaradi. Sayt telefonda ham chiroyli ochiladi.',
+      svg:'<svg viewBox="0 0 480 300" role="img" aria-label="Brauzerda web sayt"><rect width="480" height="300" rx="28" fill="#FFF0C2"/><rect x="70" y="40" width="340" height="220" rx="16" fill="#FFFFFF"/><rect x="70" y="40" width="340" height="34" rx="16" fill="#1A1446"/><rect x="70" y="58" width="340" height="16" fill="#1A1446"/><circle cx="92" cy="57" r="6" fill="#FF6B3D"/><circle cx="112" cy="57" r="6" fill="#FFC93C"/><circle cx="132" cy="57" r="6" fill="#2ED3A6"/><rect x="94" y="96" width="160" height="16" rx="8" fill="#1A1446"/><rect x="94" y="124" width="130" height="10" rx="5" fill="#B9BDE0"/><rect x="94" y="142" width="146" height="10" rx="5" fill="#B9BDE0"/><rect x="94" y="168" width="92" height="30" rx="15" fill="#5B3DF5"/><rect x="276" y="96" width="112" height="102" rx="14" fill="#5B3DF5" opacity=".85"/><rect x="94" y="216" width="92" height="26" rx="8" fill="#EEF1FF"/><rect x="196" y="216" width="92" height="26" rx="8" fill="#EEF1FF"/><rect x="298" y="216" width="90" height="26" rx="8" fill="#EEF1FF"/></svg>' },
+    { text:'Python’da yozilgan bot buyurtmalarni qabul qiladi, bazaga saqlaydi va mijozga avtomatik javob beradi. Har qanday kichik biznesga kerak.',
+      svg:'<svg viewBox="0 0 480 300" role="img" aria-label="Chatda bot mijozga javob bermoqda"><rect width="480" height="300" rx="28" fill="#D7F7EE"/><rect x="60" y="40" width="240" height="56" rx="28" fill="#FFFFFF"/><rect x="88" y="63" width="170" height="10" rx="5" fill="#B9BDE0"/><rect x="180" y="116" width="240" height="56" rx="28" fill="#5B3DF5"/><rect x="208" y="139" width="150" height="10" rx="5" fill="#FFFFFF"/><rect x="60" y="192" width="180" height="48" rx="24" fill="#FFFFFF"/><rect x="88" y="211" width="110" height="10" rx="5" fill="#B9BDE0"/><rect x="340" y="200" width="66" height="54" rx="16" fill="#1A1446"/><circle cx="361" cy="227" r="7" fill="#2ED3A6"/><circle cx="385" cy="227" r="7" fill="#2ED3A6"/><rect x="371" y="184" width="5" height="16" fill="#1A1446"/><circle cx="373" cy="181" r="7" fill="#FFC93C"/></svg>' },
+    { text:'O‘quvchi biznes uchun sun’iy intellekt yordamchisini quradi: u mijozlarning savollariga kechayu kunduz javob beradi.',
+      svg:'<svg viewBox="0 0 480 300" role="img" aria-label="Sun’iy intellekt yordamchisi robot"><rect width="480" height="300" rx="28" fill="#E6E0FF"/><rect x="237" y="36" width="6" height="34" fill="#1A1446"/><circle cx="240" cy="34" r="12" fill="#FFC93C"/><rect x="160" y="70" width="160" height="130" rx="36" fill="#5B3DF5"/><rect x="140" y="112" width="20" height="50" rx="10" fill="#1A1446"/><rect x="320" y="112" width="20" height="50" rx="10" fill="#1A1446"/><rect x="182" y="96" width="116" height="64" rx="22" fill="#1A1446"/><circle cx="214" cy="128" r="12" fill="#2ED3A6"/><circle cx="266" cy="128" r="12" fill="#2ED3A6"/><rect x="212" y="174" width="56" height="10" rx="5" fill="#FFFFFF"/><rect x="186" y="200" width="108" height="44" rx="16" fill="#3F25D6"/><path d="M82 82l8 20 20 8-20 8-8 20-8-20-20-8 20-8z" fill="#FF6B3D"/><path d="M398 180l6 14 14 6-14 6-6 14-6-14-14-6 14-6z" fill="#5B3DF5"/></svg>' }
+  ];
+  const prodView = document.getElementById('prodView');
+  const prodBtns = document.querySelectorAll('[data-prod]');
+  function showProd(i){
+    prodBtns.forEach(b => b.setAttribute('aria-selected', +b.dataset.prod === i));
+    prodView.innerHTML = '<div class="fade-swap">'+prods[i].svg+'</div><p class="fade-swap">'+prods[i].text+'</p>';
+  }
+  prodBtns.forEach(b => b.addEventListener('click', () => showProd(+b.dataset.prod)));
+  showProd(0);
+
+  /* ---------- Journey ---------- */
+  const months = [
+    ['AI bilan tanishuv','Sun’iy intellektni boshqarishni o‘rganadi va o‘z startup g‘oyasini tanlaydi.'],
+    ['Birinchi bot','Dastur qanday ishlashini tushunadi va birinchi Telegram botini yaratadi.'],
+    ['Bot internetda','Boti kechayu kunduz ishlaydi. Web sayt yaratishni boshlaydi.'],
+    ['O‘z sayti','O‘z domenida web sayti bo‘ladi va mobil ilovaga o‘tadi.'],
+    ['Mobil ilova','Ilovasi Play Market’ga yuklanadi, biznes uchun AI yordamchi quradi.'],
+    ['Demo Day','Startupini yakunlaydi va tadbirkorlar oldida taqdim etadi.']
+  ];
+  const mWrap = document.querySelector('.months');
+  const mPanel = document.getElementById('monthPanel');
+  months.forEach((m,i) => {
+    const b = document.createElement('button');
+    b.setAttribute('role','tab'); b.textContent = (i+1)+'-oy'; b.dataset.m = i;
+    b.addEventListener('click', () => showMonth(i));
+    mWrap.appendChild(b);
+  });
+  const mBtns = mWrap.querySelectorAll('button');
+  function showMonth(i){
+    mBtns.forEach((b,j) => { b.setAttribute('aria-selected', j===i); b.tabIndex = j===i ? 0 : -1; b.classList.toggle('done', j<=i); });
+    mPanel.innerHTML = '<div class="month-num fade-swap">'+(i+1)+'<small>oy</small></div><div class="fade-swap"><h3>'+months[i][0]+'</h3><p>'+months[i][1]+'</p></div>';
+  }
+  mWrap.addEventListener('keydown', e => {
+    const cur = [...mBtns].findIndex(b => b.getAttribute('aria-selected')==='true');
+    let n = cur;
+    if (e.key==='ArrowRight') n = Math.min(5,cur+1);
+    if (e.key==='ArrowLeft') n = Math.max(0,cur-1);
+    if (n!==cur){ e.preventDefault(); showMonth(n); mBtns[n].focus(); }
+  });
+  showMonth(0);
+
+  /* ---------- Rocket ---------- */
+  const box = document.getElementById('rocketBox'), launch = document.getElementById('launch');
+  launch.addEventListener('click', async () => {
+    if (box.classList.contains('launched')) return;
+    box.classList.add('launched'); launch.textContent = 'Uchdi!';
+    await wait(2200);
+    box.classList.remove('launched'); launch.textContent = 'Yana uchir';
+  });
+
+  /* ---------- Reveal ---------- */
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.15}) : null;
+  document.querySelectorAll('.reveal').forEach(el => io ? io.observe(el) : el.classList.add('in'));
+
+  /* start the hero demo when it is on screen */
+  const builder = document.querySelector('.builder');
+  if ('IntersectionObserver' in window) {
+    const bo = new IntersectionObserver(es => { if (es[0].isIntersecting){ play('bot'); bo.disconnect(); } });
+    bo.observe(builder);
+  } else play('bot');
+})();
+</script>
+</body>
+</html>
