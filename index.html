@@ -252,7 +252,8 @@ section{position:relative;padding:120px 0}
 .contacts{position:relative;display:grid;gap:12px}
 .contacts a{display:flex;justify-content:space-between;align-items:center;gap:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(10px);border-radius:18px;padding:18px 22px;text-decoration:none;font-weight:600;transition:background .2s,transform .3s var(--spring)}
 .contacts a:hover{background:rgba(255,255,255,.22);transform:translateX(-6px)}
-.contacts a span{color:#E4DEFF;font-weight:400}
+.contacts a span{color:#E4DEFF;font-weight:400;text-align:right}
+.contacts a small{font-size:14px;opacity:.85}
 footer{padding:48px 0 56px;color:var(--muted);font-size:15px;border-top:1px solid var(--stroke);margin-top:40px}
 
 @media (max-width:900px){
@@ -275,6 +276,8 @@ footer{padding:48px 0 56px;color:var(--muted);font-size:15px;border-top:1px soli
   .prod-view{padding:24px;min-height:0}
   .logo{font-size:17px}
   .nav-links a.cta-link{padding:9px 14px;font-size:15px}
+  .contacts a{flex-direction:column;align-items:flex-start;gap:4px}
+  .contacts a span{text-align:left}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
@@ -456,12 +459,12 @@ footer{padding:48px 0 56px;color:var(--muted);font-size:15px;border-top:1px soli
     <div class="cta" data-reveal="zoom">
       <div>
         <h2>Birinchi darsga yozilish</h2>
-        <p>Qo‘ng‘iroq qiling yoki yozing: guruh va dars vaqtini aytib beramiz.</p>
+        <p>Qo‘ng‘iroq qiling yoki Telegram kanalimizga qo‘shiling: guruh va dars vaqtini aytib beramiz.</p>
       </div>
       <div class="contacts" data-stagger>
-        <a href="tel:+998000000000" data-reveal="right">Qo‘ng‘iroq qilish <span>[Telefon]</span></a>
-        <a href="https://t.me/" data-reveal="right">Telegram’da yozish <span>[Telegram]</span></a>
-        <a href="#" data-reveal="right">Manzil <span>[Manzil]</span></a>
+        <a href="tel:+998998204432" data-reveal="right">Qo‘ng‘iroq qilish <span>+998 99 820 44 32</span></a>
+        <a href="https://t.me/codialuz" target="_blank" rel="noopener" data-reveal="right">Telegram kanal <span>@codialuz</span></a>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Emirates+restoran%2C+Sayilgoh+ko%27chasi%2C+Farg%27ona" target="_blank" rel="noopener" data-reveal="right">Manzil <span>Farg‘ona shahar, Sayilgoh ko‘chasi<br><small>Mo‘ljal: “Emirates” restorani ro‘parasida</small></span></a>
       </div>
     </div>
   </div>
